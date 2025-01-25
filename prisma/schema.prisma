@@ -19,12 +19,19 @@ model User {
 model Terapis {
   code          Int             @id
   name          String
-  ability       Int
+  jenisTerapiId Int
   room          String
   Schedule      Schedule[]
   Weekly        Weekly[]
   Meeting       Meeting[]
   ClientTherapy ClientTherapy[]
+  jenisTerapis  JenisTerapi    @relation(fields: [jenisTerapiId], references: [id]) 
+}
+
+model JenisTerapi {
+  id      Int       @id @default(autoincrement())
+  name    String
+  terapis Terapis[]
 }
 
 model Client {

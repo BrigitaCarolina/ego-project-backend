@@ -4,6 +4,7 @@ import cors from "cors";
 import { clientRouter } from "./client/client.router";
 import { terapisRouter } from "./terapis/terapis.router";
 import { clientTherapyRouter } from "./client-therapy/client-therapy.router";
+import { errorHandler } from "../util/middleware/error.middleware";
 
 dotenv.config();
 
@@ -20,8 +21,16 @@ app.get('/', (req: Request, res: Response) => {
   res.send('Test!');
 });
 
-app.listen(port, () => {
+app.use(errorHandler);
+
+const server = app.listen(port, () => {
   console.log(`[server]: Server is running at http://localhost:${port}`);
 });
 
-
+process.on("SIGINT", () => {
+  console.log("Shutting down server...");
+  server.close(() => {
+    console.log("Server is shut down");
+    process.exit(0);
+  });
+})

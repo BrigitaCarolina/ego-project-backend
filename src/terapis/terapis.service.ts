@@ -13,6 +13,14 @@ export const getTerapis = async (id: number): Promise<Terapis | null> => {
     })
 }
 
+export const getTerapisByJenisTerapiId = async (jenisTerapiId: number): Promise<Terapis[] | null> => {
+    return await db.terapis.findMany({
+        where: {
+            jenisTerapiId: jenisTerapiId
+        }
+    })
+}
+
 export const createClient = async (terapis: Terapis): Promise<Terapis> => {
     return await db.terapis.create({
         data: terapis

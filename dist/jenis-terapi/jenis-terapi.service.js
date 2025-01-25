@@ -9,31 +9,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createClient = exports.getTerapisByJenisTerapiId = exports.getTerapis = exports.listTerapis = void 0;
+exports.getTerapisByJenisTerapiId = exports.getJenisTerapi = void 0;
 const db_server_1 = require("../utils/db.server");
-const listTerapis = () => __awaiter(void 0, void 0, void 0, function* () {
-    return yield db_server_1.db.terapis.findMany();
+const getJenisTerapi = () => __awaiter(void 0, void 0, void 0, function* () {
+    return yield db_server_1.db.jenisTerapi.findMany();
 });
-exports.listTerapis = listTerapis;
-const getTerapis = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    return yield db_server_1.db.terapis.findUnique({
+exports.getJenisTerapi = getJenisTerapi;
+const getTerapisByJenisTerapiId = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    return yield db_server_1.db.jenisTerapi.findUnique({
         where: {
-            code: id
-        }
-    });
-});
-exports.getTerapis = getTerapis;
-const getTerapisByJenisTerapiId = (jenisTerapiId) => __awaiter(void 0, void 0, void 0, function* () {
-    return yield db_server_1.db.terapis.findMany({
-        where: {
-            jenisTerapiId: jenisTerapiId
+            id: id
         }
     });
 });
 exports.getTerapisByJenisTerapiId = getTerapisByJenisTerapiId;
-const createClient = (terapis) => __awaiter(void 0, void 0, void 0, function* () {
-    return yield db_server_1.db.terapis.create({
-        data: terapis
-    });
-});
-exports.createClient = createClient;

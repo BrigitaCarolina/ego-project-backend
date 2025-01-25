@@ -45,28 +45,22 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.terapisRouter = void 0;
+exports.clientTherapyRouter = void 0;
 const express_1 = __importDefault(require("express"));
-const TerapisService = __importStar(require("./terapis.service"));
-exports.terapisRouter = express_1.default.Router();
-exports.terapisRouter.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const terapis = yield TerapisService.listTerapis();
-        res.json({
-            success: true,
-            data: terapis
-        });
+const express_validator_1 = require("express-validator");
+const ClientTherapyService = __importStar(require("./client-therapy.service"));
+exports.clientTherapyRouter = express_1.default.Router();
+exports.clientTherapyRouter.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const errors = (0, express_validator_1.validationResult)(req);
+    if (!errors.isEmpty()) {
+        res.status(400).json({ errors: errors.array() });
     }
-    catch (error) {
-        res.status(500).json(error.message);
-    }
-}));
-exports.terapisRouter.get("/jenis-terapi/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const terapis = yield TerapisService.getTerapisByJenisTerapiId(parseInt(req.params.id));
-        res.json({
+        const clientTherapy = req.body;
+        const newClientTherapy = yield ClientTherapyService.createClientTherapy(clientTherapy);
+        res.status(201).json({
             success: true,
-            data: terapis
+            data: newClientTherapy
         });
     }
     catch (error) {

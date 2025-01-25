@@ -9,6 +9,7 @@ const cors_1 = __importDefault(require("cors"));
 const client_router_1 = require("./client/client.router");
 const terapis_router_1 = require("./terapis/terapis.router");
 const client_therapy_router_1 = require("./client-therapy/client-therapy.router");
+const error_middleware_1 = require("../util/middleware/error.middleware");
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const port = process.env.PORT;
@@ -20,6 +21,7 @@ app.use("/api/client/therapy", client_therapy_router_1.clientTherapyRouter);
 app.get('/', (req, res) => {
     res.send('Test!');
 });
+app.use(error_middleware_1.errorHandler);
 const server = app.listen(port, () => {
     console.log(`[server]: Server is running at http://localhost:${port}`);
 });

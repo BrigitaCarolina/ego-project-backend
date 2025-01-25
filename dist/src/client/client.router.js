@@ -45,31 +45,45 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.terapisRouter = void 0;
+exports.clientRouter = void 0;
 const express_1 = __importDefault(require("express"));
-const TerapisService = __importStar(require("./terapis.service"));
-exports.terapisRouter = express_1.default.Router();
-exports.terapisRouter.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const express_validator_1 = require("express-validator");
+const ClientService = __importStar(require("./client.service"));
+const response_util_1 = require("../../util/response/response.util");
+exports.clientRouter = express_1.default.Router();
+exports.clientRouter.get("/", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const terapis = yield TerapisService.listTerapis();
-        res.json({
-            success: true,
-            data: terapis
-        });
+        const clients = yield ClientService.listClients();
+        (0, response_util_1.successResponse)(res, clients);
     }
-    catch (error) {
-        res.status(500).json(error.message);
+    catch (err) {
+        next(err);
     }
 }));
-exports.terapisRouter.get("/jenis-terapi/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.clientRouter.get("/:id", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = parseInt(req.params.id);
     try {
-        const terapis = yield TerapisService.getTerapisByJenisTerapiId(parseInt(req.params.id));
-        res.json({
-            success: true,
-            data: terapis
-        });
+        const client = yield ClientService.getClient(id);
+        if (client) {
+            (0, response_util_1.successResponse)(res, client);
+        }
+        (0, response_util_1.errorResponse)(res, { message: "Client not found" }, 404);
     }
-    catch (error) {
-        res.status(500).json(error.message);
+    catch (err) {
+        next(err);
+    }
+}));
+exports.clientRouter.post("/", (0, express_validator_1.body)("name").isString().notEmpty(), (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const errors = (0, express_validator_1.validationResult)(req);
+    if (!errors.isEmpty()) {
+        (0, response_util_1.errorResponse)(res, errors.array(), 400);
+    }
+    try {
+        const client = req.body;
+        const newClient = yield ClientService.createClient(client);
+        (0, response_util_1.successResponse)(res, newClient, undefined, 201);
+    }
+    catch (err) {
+        next(err);
     }
 }));
