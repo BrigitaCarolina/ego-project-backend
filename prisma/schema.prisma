@@ -1,0 +1,91 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  username  String   @unique
+  password  String
+  role      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Terapis {
+  code          Int             @id
+  name          String
+  ability       Int
+  room          String
+  Schedule      Schedule[]
+  Weekly        Weekly[]
+  Meeting       Meeting[]
+  ClientTherapy ClientTherapy[]
+}
+
+model Client {
+  id            Int             @id @default(autoincrement())
+  name          String
+  Schedule      Schedule[]
+  Meeting       Meeting[]
+  ClientTherapy ClientTherapy[]
+}
+
+model Schedule {
+  id              Int     @id @default(autoincrement())
+  status          Int
+  rescheduleBy    Int
+  isReschedule    Int
+  startTime       Int
+  endTime         Int
+  clientTherapyId Int
+  clientId        Int
+  client          Client  @relation(fields: [clientId], references: [id])
+  terapis         Terapis @relation(fields: [terapisCode], references: [code])
+  terapisCode     Int
+}
+
+model Report {
+  id           Int @id @default(autoincrement())
+  workHours    Int
+  clientList   Int
+  weekNumber   Int
+  year         Int
+  month        Int
+  terapisId    Int
+  noShowCounts Int
+}
+
+model Weekly {
+  id           Int     @id @default(autoincrement())
+  terapisId    Int
+  startTime    Int
+  endTiem      Int
+  dayOfTheWeek Int
+  terapis      Terapis @relation(fields: [terapisId], references: [code])
+}
+
+model Meeting {
+  id          Int     @id @default(autoincrement())
+  status      Int
+  meetingDate BigInt
+  terapisId   Int
+  clientId    Int
+  terapis     Terapis @relation(fields: [terapisId], references: [code])
+  client      Client  @relation(fields: [clientId], references: [id])
+}
+
+model ClientTherapy {
+  id              Int     @id @default(autoincrement())
+  clientId        Int
+  terapisId       Int
+  therapyType     Int
+  jumlahPertemuan Int
+  terapisCode     Int
+  terapis         Terapis @relation(fields: [terapisId], references: [code])
+  client          Client  @relation(fields: [clientId], references: [id])
+}
