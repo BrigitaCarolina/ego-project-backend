@@ -76,7 +76,7 @@ exports.clientRouter.get("/:id", (req, res, next) => __awaiter(void 0, void 0, v
 exports.clientRouter.post("/", (0, express_validator_1.body)("name").isString().notEmpty(), (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const errors = (0, express_validator_1.validationResult)(req);
     if (!errors.isEmpty()) {
-        (0, response_util_1.errorResponse)(res, errors.array(), 400);
+        (0, response_util_1.errorResponse)(res, { message: errors.array()[0].msg }, 400);
     }
     try {
         const client = req.body;

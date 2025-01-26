@@ -7,7 +7,6 @@ import { errorResponse, successResponse } from "../../util/response/response.uti
 export const jenisTerapiRouter = express.Router();
 
 jenisTerapiRouter.get("/", 
-    body("id").isInt().notEmpty(),
     async(req: Request, res: Response, next) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {

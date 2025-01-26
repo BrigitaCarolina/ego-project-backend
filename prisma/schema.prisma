@@ -17,10 +17,11 @@ model User {
 }
 
 model Terapis {
-  code          Int             @id
+  id            Int             @id        
   name          String
   jenisTerapiId Int
   room          String
+  terapisCode   String
   Schedule      Schedule[]
   Weekly        Weekly[]
   Meeting       Meeting[]
@@ -52,7 +53,7 @@ model Schedule {
   clientTherapyId Int
   clientId        Int
   client          Client  @relation(fields: [clientId], references: [id])
-  terapis         Terapis @relation(fields: [terapisCode], references: [code])
+  terapis         Terapis @relation(fields: [terapisCode], references: [id])
   terapisCode     Int
 }
 
@@ -73,7 +74,7 @@ model Weekly {
   startTime    Int
   endTiem      Int
   dayOfTheWeek Int
-  terapis      Terapis @relation(fields: [terapisId], references: [code])
+  terapis      Terapis @relation(fields: [terapisId], references: [id])
 }
 
 model Meeting {
@@ -82,7 +83,7 @@ model Meeting {
   meetingDate BigInt
   terapisId   Int
   clientId    Int
-  terapis     Terapis @relation(fields: [terapisId], references: [code])
+  terapis     Terapis @relation(fields: [terapisId], references: [id])
   client      Client  @relation(fields: [clientId], references: [id])
 }
 
@@ -92,7 +93,7 @@ model ClientTherapy {
   terapisId       Int
   therapyType     Int
   jumlahPertemuan Int
-  terapisCode     Int
-  terapis         Terapis @relation(fields: [terapisId], references: [code])
+  terapisCode     String?
+  terapis         Terapis @relation(fields: [terapisId], references: [id])
   client          Client  @relation(fields: [clientId], references: [id])
 }

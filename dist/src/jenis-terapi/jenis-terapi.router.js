@@ -51,7 +51,7 @@ const express_validator_1 = require("express-validator");
 const JenisTerapiService = __importStar(require("./jenis-terapi.service"));
 const response_util_1 = require("../../util/response/response.util");
 exports.jenisTerapiRouter = express_1.default.Router();
-exports.jenisTerapiRouter.get("/", (0, express_validator_1.body)("id").isInt().notEmpty(), (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+exports.jenisTerapiRouter.get("/", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const errors = (0, express_validator_1.validationResult)(req);
     if (!errors.isEmpty()) {
         (0, response_util_1.errorResponse)(res, errors.array(), 400);

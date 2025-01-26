@@ -33,7 +33,7 @@ clientRouter.post("/",
     async(req: Request, res: Response, next) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            errorResponse(res, errors.array(), 400);
+            errorResponse(res, { message: errors.array()[0].msg }, 400);
         }
         try {
             const client = req.body;
