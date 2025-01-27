@@ -45,26 +45,31 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.terapisRouter = void 0;
+exports.terapisScheduleRouter = void 0;
 const express_1 = __importDefault(require("express"));
-const TerapisService = __importStar(require("./terapis.service"));
-const response_util_1 = require("../../util/response/response.util");
-const terapis_weekly_router_1 = require("./weekly-schedule/terapis-weekly.router");
-exports.terapisRouter = express_1.default.Router();
-exports.terapisRouter.use("/schedule", terapis_weekly_router_1.terapisScheduleRouter);
-exports.terapisRouter.get("/", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+const express_validator_1 = require("express-validator");
+const response_util_1 = require("../../../util/response/response.util");
+const TerapisScheduleService = __importStar(require("./terapis-weekly.service"));
+exports.terapisScheduleRouter = express_1.default.Router();
+exports.terapisScheduleRouter.post("/", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const errors = (0, express_validator_1.validationResult)(req);
+    if (!errors.isEmpty()) {
+        (0, response_util_1.errorResponse)(res, { message: errors.array()[0].msg }, 400);
+    }
     try {
-        const terapis = yield TerapisService.listTerapis();
-        (0, response_util_1.successResponse)(res, terapis);
+        const weekly = req.body;
+        const newClient = yield TerapisScheduleService.addWeeklySchedule(weekly);
+        (0, response_util_1.successResponse)(res, newClient, undefined, 201);
     }
     catch (err) {
         next(err);
     }
 }));
-exports.terapisRouter.get("/jenis-terapi/:id", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+exports.terapisScheduleRouter.get("/:terapisId", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const terapis = yield TerapisService.getTerapisByJenisTerapiId(parseInt(req.params.id));
-        (0, response_util_1.successResponse)(res, terapis);
+        const terapisId = parseInt(req.params.terapisId);
+        const weekly = yield TerapisScheduleService.getWeeklySchedule(terapisId);
+        (0, response_util_1.successResponse)(res, weekly);
     }
     catch (err) {
         next(err);

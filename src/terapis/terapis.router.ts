@@ -3,8 +3,11 @@ import type { Request, Response } from "express";
 
 import * as TerapisService from "./terapis.service";
 import { successResponse } from "../../util/response/response.util";
+import { terapisScheduleRouter } from "./weekly-schedule/terapis-weekly.router";
 
 export const terapisRouter = express.Router();
+terapisRouter.use("/schedule", terapisScheduleRouter);
+
 terapisRouter.get("/", async(req: Request, res: Response, next) => {
     try {
         const terapis = await TerapisService.listTerapis();

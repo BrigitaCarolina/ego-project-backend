@@ -8,7 +8,7 @@ export const listTerapis = async (): Promise<Terapis[]> => {
 export const getTerapis = async (id: number): Promise<Terapis | null> => {
     return await db.terapis.findUnique({
         where: {
-            code: id
+            id
         }
     })
 }

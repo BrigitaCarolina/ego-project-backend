@@ -72,7 +72,7 @@ model Weekly {
   id           Int     @id @default(autoincrement())
   terapisId    Int
   startTime    Int
-  endTiem      Int
+  endTime      Int
   dayOfTheWeek Int
   terapis      Terapis @relation(fields: [terapisId], references: [id])
 }
@@ -93,7 +93,6 @@ model ClientTherapy {
   terapisId       Int
   therapyType     Int
   jumlahPertemuan Int
-  terapisCode     String?
   terapis         Terapis @relation(fields: [terapisId], references: [id])
   client          Client  @relation(fields: [clientId], references: [id])
 }

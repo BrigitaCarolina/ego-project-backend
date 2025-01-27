@@ -45,26 +45,43 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.terapisRouter = void 0;
+exports.clientRouter = void 0;
 const express_1 = __importDefault(require("express"));
-const TerapisService = __importStar(require("./terapis.service"));
+const express_validator_1 = require("express-validator");
+const ClientService = __importStar(require("./client.service"));
 const response_util_1 = require("../../util/response/response.util");
-const terapis_weekly_router_1 = require("./weekly-schedule/terapis-weekly.router");
-exports.terapisRouter = express_1.default.Router();
-exports.terapisRouter.use("/schedule", terapis_weekly_router_1.terapisScheduleRouter);
-exports.terapisRouter.get("/", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+exports.clientRouter = express_1.default.Router();
+exports.clientRouter.get("/", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const terapis = yield TerapisService.listTerapis();
-        (0, response_util_1.successResponse)(res, terapis);
+        const clients = yield ClientService.listClients();
+        (0, response_util_1.successResponse)(res, clients);
     }
     catch (err) {
         next(err);
     }
 }));
-exports.terapisRouter.get("/jenis-terapi/:id", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+exports.clientRouter.get("/:id", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = parseInt(req.params.id);
     try {
-        const terapis = yield TerapisService.getTerapisByJenisTerapiId(parseInt(req.params.id));
-        (0, response_util_1.successResponse)(res, terapis);
+        const client = yield ClientService.getClient(id);
+        if (client) {
+            (0, response_util_1.successResponse)(res, client);
+        }
+        (0, response_util_1.errorResponse)(res, { message: "Client not found" }, 404);
+    }
+    catch (err) {
+        next(err);
+    }
+}));
+exports.clientRouter.post("/", (0, express_validator_1.body)("name").isString().notEmpty(), (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const errors = (0, express_validator_1.validationResult)(req);
+    if (!errors.isEmpty()) {
+        (0, response_util_1.errorResponse)(res, { message: errors.array()[0].msg }, 400);
+    }
+    try {
+        const client = req.body;
+        const newClient = yield ClientService.createClient(client);
+        (0, response_util_1.successResponse)(res, newClient, undefined, 201);
     }
     catch (err) {
         next(err);

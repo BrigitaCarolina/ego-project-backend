@@ -9,31 +9,23 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createClient = exports.getTerapisByJenisTerapiId = exports.getTerapis = exports.listTerapis = void 0;
+exports.createClient = exports.getClient = exports.listClients = void 0;
 const db_server_1 = require("../utils/db.server");
-const listTerapis = () => __awaiter(void 0, void 0, void 0, function* () {
-    return yield db_server_1.db.terapis.findMany();
+const listClients = () => __awaiter(void 0, void 0, void 0, function* () {
+    return yield db_server_1.db.client.findMany();
 });
-exports.listTerapis = listTerapis;
-const getTerapis = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    return yield db_server_1.db.terapis.findUnique({
+exports.listClients = listClients;
+const getClient = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    return yield db_server_1.db.client.findUnique({
         where: {
-            id
+            id: id
         }
     });
 });
-exports.getTerapis = getTerapis;
-const getTerapisByJenisTerapiId = (jenisTerapiId) => __awaiter(void 0, void 0, void 0, function* () {
-    return yield db_server_1.db.terapis.findMany({
-        where: {
-            jenisTerapiId: jenisTerapiId
-        }
-    });
-});
-exports.getTerapisByJenisTerapiId = getTerapisByJenisTerapiId;
-const createClient = (terapis) => __awaiter(void 0, void 0, void 0, function* () {
-    return yield db_server_1.db.terapis.create({
-        data: terapis
+exports.getClient = getClient;
+const createClient = (client) => __awaiter(void 0, void 0, void 0, function* () {
+    return yield db_server_1.db.client.create({
+        data: client
     });
 });
 exports.createClient = createClient;
