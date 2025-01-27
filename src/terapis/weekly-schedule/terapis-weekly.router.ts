@@ -33,3 +33,15 @@ terapisScheduleRouter.get("/:terapisId",
         }
     }
 );
+
+terapisScheduleRouter.delete("/",
+    async (req: Request, res: Response, next) => {
+        try {
+            const id = req.body.id;
+            const weekly = await TerapisScheduleService.deleteWeeklySchedule(id);
+            successResponse(res, weekly);
+        } catch (err: any) {
+            next(err);
+        }
+    }
+);

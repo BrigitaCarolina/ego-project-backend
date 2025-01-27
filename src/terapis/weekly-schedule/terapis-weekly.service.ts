@@ -14,3 +14,11 @@ export const getWeeklySchedule = async (terapisId: number): Promise<Weekly[]> =>
         }
     })
 }
+
+export const deleteWeeklySchedule = async (id: number): Promise<Weekly> => {
+    return await db.weekly.delete({
+        where: {
+            id
+        }
+    })
+}

@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getWeeklySchedule = exports.addWeeklySchedule = void 0;
+exports.deleteWeeklySchedule = exports.getWeeklySchedule = exports.addWeeklySchedule = void 0;
 const db_server_1 = require("../../utils/db.server");
 const addWeeklySchedule = (weekly) => __awaiter(void 0, void 0, void 0, function* () {
     return yield db_server_1.db.weekly.create({
@@ -25,3 +25,11 @@ const getWeeklySchedule = (terapisId) => __awaiter(void 0, void 0, void 0, funct
     });
 });
 exports.getWeeklySchedule = getWeeklySchedule;
+const deleteWeeklySchedule = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    return yield db_server_1.db.weekly.delete({
+        where: {
+            id
+        }
+    });
+});
+exports.deleteWeeklySchedule = deleteWeeklySchedule;

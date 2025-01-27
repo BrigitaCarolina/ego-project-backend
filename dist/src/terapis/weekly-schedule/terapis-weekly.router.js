@@ -75,3 +75,13 @@ exports.terapisScheduleRouter.get("/:terapisId", (req, res, next) => __awaiter(v
         next(err);
     }
 }));
+exports.terapisScheduleRouter.delete("/", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const id = req.body.id;
+        const weekly = yield TerapisScheduleService.deleteWeeklySchedule(id);
+        (0, response_util_1.successResponse)(res, weekly);
+    }
+    catch (err) {
+        next(err);
+    }
+}));
