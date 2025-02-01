@@ -38,6 +38,7 @@ model JenisTerapi {
 model Client {
   id            Int             @id @default(autoincrement())
   name          String
+  image         String
   Schedule      Schedule[]
   Meeting       Meeting[]
   ClientTherapy ClientTherapy[]
