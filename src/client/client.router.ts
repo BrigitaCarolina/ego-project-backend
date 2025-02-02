@@ -1,11 +1,14 @@
 import express from "express"; 
+import { errorResponse, successResponse } from "../../util/response/response.util";
 import type { Request, Response } from "express";
 import { body, validationResult } from "express-validator";
+import { clientImageRouter } from "./image/client.image.router";
 
 import * as ClientService from "./client.service";
-import { errorResponse, successResponse } from "../../util/response/response.util";
 
 export const clientRouter = express.Router();
+clientRouter.use("/image", clientImageRouter);
+
 clientRouter.get("/", async(req: Request, res: Response, next) => {
     try {
         const clients = await ClientService.listClients();

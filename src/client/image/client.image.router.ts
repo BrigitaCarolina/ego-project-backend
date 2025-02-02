@@ -15,6 +15,7 @@ clientImageRouter.post("/",
     async(req: Request, res: Response, next) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
+            console.log(errors.array());
             errorResponse(res, { message: errors.array()[0].msg }, 400);
         }
         try {

@@ -5,9 +5,8 @@ export const addClientImage = async (image: Express.Multer.File): Promise<String
     const uploadDir = path.join(process.cwd(), "/uploads");
     await fs.mkdir(uploadDir, { recursive: true }); 
 
-    const timestamp = new Date().toString().replace(/[:.]/g, "-");
-    const ext = image.mimetype.split("/")[1];
-    const uniqueFilename = `${timestamp}-${image.filename}.${ext}`;
+    const timestamp = new Date().getTime();
+    const uniqueFilename = `${timestamp}-${image.originalname}`;
     const filePath = path.join(uploadDir, uniqueFilename);
 
     const arrayBuffer = image.buffer;
